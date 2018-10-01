@@ -1,0 +1,53 @@
+{
+  "PriceDetailsDivSelector": {
+    "ById": "#fare-review-price",
+    "ByClass": ".farereview-price",
+    "ByXpath": "//*[@id='fare-review-price']",
+    "isOptional": false,
+    "parent": null,
+    "type": "select",
+    "value": null,
+    "linked": null
+  },
+  "TripDetailsDivSelector": {
+    "ById": "#fare-review-bounds",
+    "ByClass": ".farereview-bounds",
+    "ByXpath": "//*[@id='fare-review-bounds']",
+    "isOptional": false,
+    "parent": null,
+    "type": "select",
+    "value": null,
+    "linked": null
+  },
+  "TotalCostSelector": {
+    "ById": "",
+    "ByClass": "price-value price-total-amount-value",
+    "ByXpath": "//*[@class='price-value price-total-amount-value']",
+    "isOptional": false,
+    "parent": "PriceDetailsDivSelector",
+    "type": "extractor",
+    "value": null,
+    "linked": null
+  },
+  "PriceBreakdownDivSelector": {
+    "ById": "",
+    "ByClass": ".price-text price-taxes-text",
+    "ByXpath": "//*[@class='price-text price-taxes-text']",
+    "isOptional": false,
+    "parent": "PriceDetailsDivSelector",
+    "type": "click",
+    "value": null,
+    "linked": null
+  },
+  "PriceBreakdownDivSelector": {
+    "ById": "",
+    "ByClass": ".price-text price-taxes-text",
+    "ByXpath": "//*[@class='price-text price-taxes-text']",
+    "isOptional": false,
+    "parent": "PriceDetailsDivSelector",
+    "type": "click",
+    "value": null,
+    "linked": null
+  },
+
+}

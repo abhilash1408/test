@@ -1,0 +1,45 @@
+roundTripSelector : {
+  "id" : "#ida-vuelta"
+}
+onewayTripSelector : {
+"id" : "#ida"
+}
+
+location selector not exactly giving correct option
+
+fromLocationSelector : {
+ "id" : "#text-from-visible"
+ class : ".has-tooltip flybox-id-bl-fly-1"
+}
+toLocationSelector : {
+"class" : ".has-tooltip flybox-id-bl-fly-2"
+}
+
+toLocationListSelector : {
+"xpath" : "/html/body/div[2]/div[2]/div[3]/div/div/div[1]/form/fieldset/div[1]/div[2]/span/ul/li/a"
+}
+
+fromLocationListSelector : {
+"xpath" : "/html/body/div[2]/div[2]/div[3]/div/div/div[1]/form/fieldset/div[1]/div[1]/span/ul/li/a"
+}
+
+fromDateSelector : {
+"xpath" : "/html/body/div[2]/div[2]/div[3]/div/div/div[1]/form/fieldset/div[4]/div[1]/span/label"
+}
+
+adultsSelector : {
+id : "#select-adultos"
+}
+
+different class codes
+R - Lowest fare
+N - Premium Economy
+B - Business
+
+classTypeSelector : {
+id : "select-clase"
+}
+
+actionSelector : {
+id : "#toAvailSubmit"
+}
