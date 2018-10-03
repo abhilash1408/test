@@ -90,9 +90,6 @@ class NavigationManager {
     await Promise.all([
       this._pages.reduce(async function(promise, page) {
           return promise.then(async function() {
-            console.log("current page");
-            console.log(page);
-            console.log("page end")
             if (_response.availability) return;
             if ( page.index() == 1){
               try{

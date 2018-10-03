@@ -1330,8 +1330,8 @@
           },
           "adultsSelector": {
             "ByXpath": "//*[@id='select-adultos']",
-            "ById": "#select-adultos",
-            "ByClass": "",
+            "ById": null,
+            "ByClass": null,
             "isOptional": false,
             "parent": null,
             "type": "dropdown",
@@ -1380,6 +1380,47 @@
         "isRequired": false,
         "type":"advance search"
       },
+      "step3": {
+        "url": "",
+        "htmlTags": {
+          "closedSelector":{
+            "ByXpath": "//*[@id='tpl1_error-panel']",
+            "ById": "#tpl1_error-panel",
+            "ByClass": "",
+            "isOptional": true,
+            "parent": null,
+            "type": "closed",
+            "value": null,
+            "linked": null,
+            "event": null,
+            "ignoreAttribute": null,
+            "ignoreValue": null,
+            "dependency": null
+          }
+        },
+        "action": "click",
+        "actionSelector": {
+          "ById": "",
+          "ByClass": ".tripSummary-btn-continue",
+          "ByXpath": ""
+        },
+        "dependentFlag":"",
+        "isRequired": false,
+        "type":"calendar"
+      },
+      "step4": {
+        "url": "",
+        "htmlTags": {},
+        "action": null,
+        "actionSelector": {
+          "ById": "",
+          "ByClass": "",
+          "ByXpath": ""
+        },
+        "dependentFlag":"",
+        "isRequired": true,
+        "type":"listing"
+      }
     },
     "CalendarScriptPath": "Calendar.js",
     "GlobalScriptPath": "",

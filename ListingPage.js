@@ -13,9 +13,11 @@ ListingPage.prototype._setInput = async function(browserPage, page, configuratio
   logger.Info = "SetInput completed on listing page.";
 };
 ListingPage.prototype._getInfo = async function(browserPage, page, configuration, response, monitoring, logger){
+  console.log("in listing page");
+  await browserPage.waitFor(10000);
   let _parentTags = page.tagsList().filter(tag => (tag.parent() == null && tag.action() == enums.tagTypeEnums.get("select").value && tag.isRoot()));
   await selectionInfo(browserPage, page, configuration, response, monitoring, logger, _parentTags);
-  logger.Info = "GetInput completed on listing page.";
+  logger.Info = "GetInfo completed on listing page.";
 };
 ListingPage.prototype._navigate = async function(browserPage, page, configuration, response, monitoring, logger){
   if (!page.action()) return;

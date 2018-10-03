@@ -40,6 +40,7 @@ function findGivenDateControl(configDateValue) {
 function traverseAndGetCalendarControl(configDateValue) {
     var lookupMonthDataControl = null;
     var loopingCounter = 0;
+    console.log("searching date element for : ", configDateValue)
     while (true) {
         loopingCounter++;
         //get the specified date from the request
@@ -67,17 +68,13 @@ function traverseAndGetCalendarControl(configDateValue) {
         }
         //once the date input box is clicked, it shows the calendar popup, from here we have to get the active calendar months, as at a time only two calendar months are shown
         //we use the css style of visibility to get the current calendar html block
-        var allDatePickers = $("div[id*='ui-datepicker-div']");
 
-        var activeFromCalendarID;
-        for (var i = 0; i < allDatePickers.length; i++) {
-            if (allDatePickers[i].style.cssText.includes("display: block;")) {
-                activeFromCalendarID = allDatePickers[i].id;
-            }
-        }
+        // date picker path hardcoded
+        var fromCalendarHtmlControls = document.querySelector("div[class*='ui-datepicker-inline']");
         ///When the calendar is opened, it shows two months, viz. the current and the next.
         ///So using the given date, we need to traverse to the correct month and then choose the date given.
-        var fromCalendarHtmlControls = document.getElementById(activeFromCalendarID);
+        console.log("calendar div")
+        console.log(fromCalendarHtmlControls);
 
         //Get the current month
         var currentTableMonthDataControls = fromCalendarHtmlControls.getElementsByTagName('table')[0];
