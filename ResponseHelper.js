@@ -33,15 +33,19 @@ var baseFlightDetails = {
     "airlineName": null,
     "flightNumber": null,
     "airlineCode": null,
+    "planeInfo": null,
     "extraText": null,
     "mealPlan": null,
     "type": null,
     "layover": null,
-    "city": null,
+    "departureCity": null,
     "departureTime": null,
     "arrivalTime": null,
     "airportName": null,
+    "arrivalCity": null,
+    "departureTerminal": null,
     "destinationAirport": null,
+    "arrivalTerminal": null,
     "duration": null
 }
 var basePrice  = {
@@ -111,6 +115,7 @@ function mapValueToData(objectName, value, cacheUrl, isRoundtrip, isCombined, ex
   }else{
     values = [{"value": value, "objectName": ""}];
   }
+
   for(var i of values){
     let objects = objectName.split('>');
     value = i["value"];
@@ -126,6 +131,8 @@ function mapValueToData(objectName, value, cacheUrl, isRoundtrip, isCombined, ex
     }
     if (!isRoundtrip && objects[0].toLowerCase() == "combined") objects[0] = "outbound";
     if (isRoundtrip && isCombined && objects[1].toLowerCase() == "price") objects[0] = "combined";
+    console.log("in mapValueToData")
+    console.log(value, objects);
     switch (true) {
       case ((objects[0].toLowerCase() == "outbound") && (objects[1].toLowerCase() == "flightdetails") && (getKey(baseFlightDetails, objects[2].toLowerCase()) in flightDetails)):
         flightDetails.index = flightDetailsIndex;
@@ -201,12 +208,15 @@ function flushFlightDetails(response){
 
 function flushFlightDetailsInbound(response){
   inboundTypeDetails.flightDetails.push(flightDetailsInbound);
+  console.log("inbound flight details");
+  console.log(flightDetailsInbound);
   baseFlightTypeDetails.flightDetails = [];
   flightDetailsInbound = Object.assign({}, baseFlightDetails);
   flightDetailsIndexInbound += 1;
 }
 
 function flush(response, isRoundtrip, isCombined=true){
+  console.log("flushing flight data")
   if (!outboundTypeDetails['guid']) outboundTypeDetails['guid'] = uuidv4();
   outboundTypeDetails = updateObjectData(outboundTypeDetails);
   inboundTypeDetails = updateObjectData(inboundTypeDetails);
@@ -221,6 +231,8 @@ function flush(response, isRoundtrip, isCombined=true){
     }else{
       inboundTypeDetails.price.push(priceDetailsInbound);
     }
+    console.log("setting inbound");
+    console.log(inboundTypeDetails);
     response.setInbound = Object.assign({}, inboundTypeDetails);
   }else{
     outboundTypeDetails.price.push(priceDetails);

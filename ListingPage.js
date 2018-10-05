@@ -14,7 +14,7 @@ ListingPage.prototype._setInput = async function(browserPage, page, configuratio
 };
 ListingPage.prototype._getInfo = async function(browserPage, page, configuration, response, monitoring, logger){
   console.log("in listing page");
-  await browserPage.waitFor(10000);
+  await browserPage.waitFor(20000);
   let _parentTags = page.tagsList().filter(tag => (tag.parent() == null && tag.action() == enums.tagTypeEnums.get("select").value && tag.isRoot()));
   await selectionInfo(browserPage, page, configuration, response, monitoring, logger, _parentTags);
   logger.Info = "GetInfo completed on listing page.";
@@ -65,7 +65,9 @@ async function selectionInfo(browserPage, page, configuration, response, monitor
         await handleClick(browserPage, parentElement, searchInPage, _childTag, page, configuration, response, monitoring, logger);
         await handleExtract(browserPage, parentElement, _childTag, page, configuration, response, monitoring, logger);
       }
+      console.log("check tag flush flight details ", _tag.name());
       if (_tag.raise() && _tag.raise() == "flush.flightdetails"){
+        console.log("flushing flight details")
         responseHelper.flushFlightDetails(response);
       }
       if (_tag.raise() && _tag.raise() == "flush.flightdetailsInbound"){
@@ -106,6 +108,7 @@ async function handleSelect(browserPage, parentElement, tag, page, configuration
       let subChildTags = page.tagsList().filter(_tag => _tag.name() == tag.event());
       await selectionInfo(browserPage, page, configuration, response, monitoring, logger, subChildTags);
     }
+    // console.log("checking flush ", tag.name());
     if (tag.raise() && tag.raise() == "flush"){
       responseHelper.flush(response, configuration.parameters().isRoundtrip());
     }
@@ -130,6 +133,8 @@ async function handleSelect(browserPage, parentElement, tag, page, configuration
 async function handleClick(browserPage, parentElement, searchInPage, tag, page, configuration, response, monitoring, logger){
   if (tag.action() == enums.tagTypeEnums.get("click").value)
   {
+    await browserPage.waitFor(10000);
+    console.log("clicking flight element");
     let clickElements = [];
     if (searchInPage){
       clickElements = await tag.elements(browserPage, monitoring, parentElement);
@@ -214,6 +219,7 @@ async function handleClick(browserPage, parentElement, searchInPage, tag, page, 
  */
 async function handleExtract(browserPage, parentElement, tag, page, configuration, response, monitoring, logger){
   if (tag.action() == enums.tagTypeEnums.get("extractor").value){
+    console.log("extracting data of tag ", tag.name());
     await extractData(browserPage, parentElement, tag, response, configuration, monitoring, logger);
     if (tag.linked())
     {
@@ -237,7 +243,9 @@ async function handleExtract(browserPage, parentElement, tag, page, configuratio
  * @return None.
  */
 async function extractData(browserPage, parentElement, tag, response, configuration, monitoring, logger){
+  console.log("in extractdata");
   let value = await tag.value(browserPage, monitoring, parentElement);
+  console.log("extracted value ", value);
   responseHelper.mapValueToData(tag.objectName(), value, cacheUrl, configuration.parameters().isRoundtrip(), configuration.isCombined(), tag.expression());
 }
 

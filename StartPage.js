@@ -30,6 +30,7 @@ StartPage.prototype._getInfo = async function(browserPage, page, configuration, 
 StartPage.prototype._navigate = async function(browserPage, page, configuration, response, monitoring, logger){
   if (page.action() == enums.actionEnums.get("click").value){
     let navigationElement = await page.actionSelector().element(browserPage, monitoring);
+    console.log("clicking nav element");
     await navigationElement.click({delay:2000});
     await browserPage.waitFor(3000);
     logger.Info = "Navigating from start page.";
@@ -88,6 +89,7 @@ async function setCalendar(browserPage, page, configuration, monitoring){
     }else if ((inputTag.name() == "toDateSelector") && (configuration.parameters()._isRoundtrip)) {
       let toDateElement = await inputTag.element(browserPage, monitoring);
       await toDateElement.click();
+      await browserPage.waitFor(2000);
       await browserPage.evaluate((parameters, departureDateControl) => {
         var return_date_element = findGivenDateControl(parameters._endDate.toString());
         return_date_element.click();

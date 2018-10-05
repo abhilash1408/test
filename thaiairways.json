@@ -1380,6 +1380,7 @@
         "isRequired": false,
         "type":"advance search"
       },
+
     },
     "CalendarScriptPath": "Calendar.js",
     "GlobalScriptPath": "",
