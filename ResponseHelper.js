@@ -43,9 +43,7 @@ var baseFlightDetails = {
     "arrivalTime": null,
     "airportName": null,
     "arrivalCity": null,
-    "departureTerminal": null,
     "destinationAirport": null,
-    "arrivalTerminal": null,
     "duration": null
 }
 var basePrice  = {
@@ -90,14 +88,22 @@ function evaluateExpression(value, expression){
         value = value.split(expression["pattern"]);
         result = evaluateValue(value, expression["value"]);
         return result;
-    }
+    }else if(expression["type"] == enums.expressionTypeEnums.get("replace").value){
+      let regexp = new RegExp(expression["pattern"], expression["flags"]);
+      let temp = value.replace(regexp, expression["replace"]);
+      result = evaluateValue(temp, expression["value"]);
+      return result;
+  }
   }
 }
 
 function evaluateValue(value, valArr){
   let output = [];
+  if(!(value instanceof Array)){
+    value = [value];
+  }
   for(let val in valArr){
-    if(Object.keys(valArr[val]["expression"]).length != 0){
+    if ((valArr[val]["expression"]) && (Object.keys(valArr[val]["expression"]).length != 0)){
       let temp = evaluateExpression(value[val], valArr[val]["expression"]);
       output = output.concat(temp);
       // console.log("temp: ", temp)
@@ -119,6 +125,9 @@ function mapValueToData(objectName, value, cacheUrl, isRoundtrip, isCombined, ex
   for(var i of values){
     let objects = objectName.split('>');
     value = i["value"];
+    if(value){
+      value = value.trim();
+    }
     if (i["objectName"].length != 0){
       objects.push(i["objectName"]);
     }
@@ -131,8 +140,6 @@ function mapValueToData(objectName, value, cacheUrl, isRoundtrip, isCombined, ex
     }
     if (!isRoundtrip && objects[0].toLowerCase() == "combined") objects[0] = "outbound";
     if (isRoundtrip && isCombined && objects[1].toLowerCase() == "price") objects[0] = "combined";
-    console.log("in mapValueToData")
-    console.log(value, objects);
     switch (true) {
       case ((objects[0].toLowerCase() == "outbound") && (objects[1].toLowerCase() == "flightdetails") && (getKey(baseFlightDetails, objects[2].toLowerCase()) in flightDetails)):
         flightDetails.index = flightDetailsIndex;
@@ -208,15 +215,12 @@ function flushFlightDetails(response){
 
 function flushFlightDetailsInbound(response){
   inboundTypeDetails.flightDetails.push(flightDetailsInbound);
-  console.log("inbound flight details");
-  console.log(flightDetailsInbound);
   baseFlightTypeDetails.flightDetails = [];
   flightDetailsInbound = Object.assign({}, baseFlightDetails);
   flightDetailsIndexInbound += 1;
 }
 
 function flush(response, isRoundtrip, isCombined=true){
-  console.log("flushing flight data")
   if (!outboundTypeDetails['guid']) outboundTypeDetails['guid'] = uuidv4();
   outboundTypeDetails = updateObjectData(outboundTypeDetails);
   inboundTypeDetails = updateObjectData(inboundTypeDetails);
@@ -231,8 +235,6 @@ function flush(response, isRoundtrip, isCombined=true){
     }else{
       inboundTypeDetails.price.push(priceDetailsInbound);
     }
-    console.log("setting inbound");
-    console.log(inboundTypeDetails);
     response.setInbound = Object.assign({}, inboundTypeDetails);
   }else{
     outboundTypeDetails.price.push(priceDetails);

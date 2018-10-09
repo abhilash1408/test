@@ -1122,10 +1122,10 @@
   ],
   "CrawlParams": {
     "url": "https://www.iberia.com/?language=en",
-    "startDate": "10/24/2018",
-    "endDate": "10/26/2018",
+    "startDate": "11/22/2018",
+    "endDate": "11/24/2018",
     "startLocationValue": "mad",
-    "destinationLocationValue": "ber",
+    "destinationLocationValue": "mos",
     "travelClass": "R",
     "paxAdult": "1",
     "paxChild": "1",
@@ -1413,8 +1413,8 @@
           },
           "outBoundSelector":{
             "ById": "",
-            "ByClass": ".flight-info",
-            "ByXpath": "//*[contains(@class,'flight-info') and @initial_order='1' and @relative_order='1']",
+            "ByClass": "",
+            "ByXpath": "//*[contains(@class,'flight-info') and @initial_order='1']",
             "isOptional": false,
             "parent": "outBoundDivSelector",
             "type": "select",
@@ -1480,8 +1480,8 @@
             "ByXpath": "//*[@class='scale']",
             "isOptional": false,
             "parent": "outBoundAllStopsDivSelector",
-            "raise": "flush.flightdetails",
             "type": "select",
+            "raise": "flush.flightdetails",
             "value": null,
             "linked": null,
             "event": null,
@@ -1559,20 +1559,6 @@
             "ignoreValue": null,
             "dependency": null
           },
-          "outBoundDepartureTerminalSelector": {
-            "ById": "",
-            "ByClass": ".terminal-info",
-            "ByXpath": "//*[@class='terminal-info']",
-            "isOptional": false,
-            "parent": "outBoundDepartureDetailsSelector",
-            "type": "extractor",
-            "value": "outbound>flightdetails>departureTerminal",
-            "linked": null,
-            "event": null,
-            "ignoreAttribute": "parameter",
-            "ignoreValue": null,
-            "dependency": null
-          },
           "outboundFlightDurationSelector":{
             "ById": "",
             "ByClass": ".duration",
@@ -1580,7 +1566,31 @@
             "isOptional": false,
             "parent": "outBoundDepartureDetailsSelector",
             "type": "extractor",
-            "value": "outbound>flightdetails>duration",
+            "value": "outbound>flightdetails",
+            "expression":{
+                "type": 3,
+                "pattern":"\\t\\n|\\t|\\n",
+                "replace": "",
+                "flags": "gm",
+                "value":[
+                   {
+                      "index":0,
+                      "expression":{
+                          "type": 3,
+                          "pattern":" +",
+                          "replace": " ",
+                          "flags": "g",
+                          "value":[
+                             {
+                                "index":0,
+                                "expression":{},
+                                "value" : "duration"
+                             }
+                          ]
+                      }
+                   }
+                ]
+            },
             "linked": null,
             "event": null,
             "ignoreAttribute": null,
@@ -1608,7 +1618,31 @@
             "isOptional": false,
             "parent": "outBoundArrivalDivSelector",
             "type": "extractor",
-            "value": "outbound>flightdetails>ArrivalTime",
+            "value": "outbound>flightdetails",
+            "expression":{
+                "type": 3,
+                "pattern":"\\t\\n|\\t|\\n",
+                "replace": "",
+                "flags": "gm",
+                "value":[
+                   {
+                      "index":0,
+                      "expression":{
+                          "type": 3,
+                          "pattern":" +",
+                          "replace": " ",
+                          "flags": "g",
+                          "value":[
+                             {
+                                "index":0,
+                                "expression":{},
+                                "value" : "ArrivalTime"
+                             }
+                          ]
+                      }
+                   }
+                ]
+            },
             "linked": null,
             "event": null,
             "ignoreAttribute": "parameter",
@@ -1657,20 +1691,6 @@
             "ignoreValue": null,
             "dependency": null
           },
-          "outBoundArrivalTerminalSelector": {
-            "ById": "",
-            "ByClass": ".terminal-info",
-            "ByXpath": "//*[@class='terminal-info']",
-            "isOptional": false,
-            "parent": "outBoundArrivalDetailsSelector",
-            "type": "extractor",
-            "value": "outbound>flightdetails>arrivalTerminal",
-            "linked": null,
-            "event": null,
-            "ignoreAttribute": "parameter",
-            "ignoreValue": null,
-            "dependency": null
-          },
           "outBoundFlightDivSelector": {
             "ById": "",
             "ByClass": ".code-info",
@@ -1706,7 +1726,23 @@
             "isOptional": false,
             "parent": "outBoundFlightDetailsDivSelector",
             "type": "extractor",
-            "value": "outbound>flightdetails>flightNumber",
+            "value": "outbound>flightdetails",
+            "expression":{
+                "type": 1,
+                "pattern":"([a-z]+|[A-Z]+)(\\d+)",
+                "value":[
+                   {
+                      "index":0,
+                      "expression":{},
+                      "value" : "airlineCode"
+                   },
+                   {
+                      "index":1,
+                      "expression":{},
+                      "value" : "flightNumber"
+                   }
+                ]
+            },
             "linked": null,
             "event": null,
             "ignoreAttribute": "parameter",
@@ -1773,7 +1809,7 @@
           },
           "inBoundSelector":{
             "ById": "",
-            "ByClass": ".flight-info",
+            "ByClass": "",
             "ByXpath": "//*[contains(@class,'flight-info') and @initial_order='1' and @relative_order='1']",
             "isOptional": false,
             "parent": "inBoundDivSelector",
@@ -1919,20 +1955,6 @@
             "ignoreValue": null,
             "dependency": null
           },
-          "inBoundDepartureTerminalSelector": {
-            "ById": "",
-            "ByClass": ".terminal-info",
-            "ByXpath": "//*[@class='terminal-info']",
-            "isOptional": false,
-            "parent": "inBoundDepartureDetailsSelector",
-            "type": "extractor",
-            "value": "inbound>flightdetails>departureTerminal",
-            "linked": null,
-            "event": null,
-            "ignoreAttribute": "parameter",
-            "ignoreValue": null,
-            "dependency": null
-          },
           "inboundFlightDurationSelector":{
             "ById": "",
             "ByClass": ".duration",
@@ -1940,7 +1962,31 @@
             "isOptional": false,
             "parent": "inBoundDepartureDetailsSelector",
             "type": "extractor",
-            "value": "inbound>flightdetails>duration",
+            "value": "inbound>flightdetails",
+            "expression":{
+                "type": 3,
+                "pattern":"\\t\\n|\\t|\\n",
+                "replace": "",
+                "flags": "gm",
+                "value":[
+                   {
+                      "index":0,
+                      "expression":{
+                          "type": 3,
+                          "pattern":" +",
+                          "replace": " ",
+                          "flags": "g",
+                          "value":[
+                             {
+                                "index":0,
+                                "expression":{},
+                                "value" : "duration"
+                             }
+                          ]
+                      }
+                   }
+                ]
+            },
             "linked": null,
             "event": null,
             "ignoreAttribute": null,
@@ -2017,20 +2063,6 @@
             "ignoreValue": null,
             "dependency": null
           },
-          "inBoundArrivalTerminalSelector": {
-            "ById": "",
-            "ByClass": ".terminal-info",
-            "ByXpath": "//*[@class='terminal-info']",
-            "isOptional": false,
-            "parent": "inBoundArrivalDetailsSelector",
-            "type": "extractor",
-            "value": "inbound>flightdetails>arrivalTerminal",
-            "linked": null,
-            "event": null,
-            "ignoreAttribute": "parameter",
-            "ignoreValue": null,
-            "dependency": null
-          },
           "inBoundFlightDivSelector": {
             "ById": "",
             "ByClass": ".code-info",
@@ -2066,7 +2098,23 @@
             "isOptional": false,
             "parent": "inBoundFlightDetailsDivSelector",
             "type": "extractor",
-            "value": "inbound>flightdetails>flightNumber",
+            "value": "inbound>flightdetails",
+            "expression":{
+                "type": 1,
+                "pattern":"([a-z]+|[A-Z]+)(\\d+)",
+                "value":[
+                   {
+                      "index":0,
+                      "expression":{},
+                      "value" : "airlineCode"
+                   },
+                   {
+                      "index":1,
+                      "expression":{},
+                      "value" : "flightNumber"
+                   }
+                ]
+            },
             "linked": null,
             "event": null,
             "ignoreAttribute": "parameter",
@@ -2101,20 +2149,51 @@
             "ignoreValue": null,
             "dependency": null
           },
-          "inBoundCloseSelector": {
+
+          "totalFlightPriceDivSelector": {
             "ById": "",
-            "ByClass": ".close",
-            "ByXpath": "//*[@class='close']",
+            "ByClass": ".total-price-cont",
+            "ByXpath": "//*[@class='total-price-cont']",
             "isOptional": false,
-            "parent": "inBoundDetailsDivSelector",
-            "type": "click",
-            "value": null,
+            "parent": null,
+            "type": "select",
+            "value": "",
             "linked": null,
             "event": null,
             "ignoreAttribute": "parameter",
             "ignoreValue": null,
             "dependency": null,
-            "raise": "flush"
+            "isRoot": true
+          },
+          "totalFlightPriceSelector": {
+            "ById": "",
+            "ByClass": ".total-price",
+            "ByXpath": "//*[@class='total-price']",
+            "isOptional": false,
+            "parent": "totalFlightPriceDivSelector",
+            "type": "extractor",
+            "value": "outbound>price>price",
+            "linked": null,
+            "event": null,
+            "ignoreAttribute": "parameter",
+            "ignoreValue": null,
+            "dependency": null
+          },
+          "endPageSelector" : {
+            "ById": "#btn",
+            "ByClass": "",
+            "ByXpath": "//*[@id='btn']",
+            "isOptional": false,
+            "parent": null,
+            "type": "select",
+            "raise": "flush",
+            "isRoot": true,
+            "value": "",
+            "linked": null,
+            "event": null,
+            "ignoreAttribute": "parameter",
+            "ignoreValue": null,
+            "dependency": null
           }
         },
         "action": null,

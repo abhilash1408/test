@@ -3,24 +3,18 @@ var enums = require('./Enums.js');
 
 var StartPage = base.BaseCrawlPage.subclass();
 StartPage.prototype._setInput = async function(browserPage, page, configuration, response, monitoring, logger){
-  console.log("Setting start page inputs")
   await browserPage.addScriptTag({
     path: './' + configuration.calendarPath()
   });
   await setTripSelector(browserPage, page, configuration, monitoring, logger);
-  console.log("trip sele completed");
   logger.Debug = "SetTripSelector completed.";
   await setInputs(browserPage, page, configuration, monitoring);
-  console.log("set inputs completed");
   logger.Debug = "setInputs completed.";
   await setCalendar(browserPage, page, configuration, monitoring);
-  console.log("set calendar completed")
   logger.Debug = "setCalendar completed.";
   await setAdults(browserPage, page, configuration, monitoring);
-  console.log("set adults completed")
   logger.Debug = "setAdults completed.";
   await setClass(browserPage, page, configuration, monitoring);
-  console.log("Set class completed")
   logger.Debug = "setClass completed.";
   logger.Info = "SetInput completed on start page.";
 }
@@ -30,7 +24,6 @@ StartPage.prototype._getInfo = async function(browserPage, page, configuration, 
 StartPage.prototype._navigate = async function(browserPage, page, configuration, response, monitoring, logger){
   if (page.action() == enums.actionEnums.get("click").value){
     let navigationElement = await page.actionSelector().element(browserPage, monitoring);
-    console.log("clicking nav element");
     await navigationElement.click({delay:2000});
     await browserPage.waitFor(3000);
     logger.Info = "Navigating from start page.";
@@ -80,11 +73,9 @@ async function setCalendar(browserPage, page, configuration, monitoring){
       let fromDateElement = await inputTag.element(browserPage, monitoring);
       await fromDateElement.click();
       await browserPage.waitFor(2000);
-      console.log("from date clicked");
       await browserPage.evaluate((parameters, departureDateControl) => {
         var departure_date_element = findGivenDateControl(parameters._startDate.toString());
         departure_date_element.click();
-        console.log("departure date set");
       }, configuration.parameters(), fromDateElement);
     }else if ((inputTag.name() == "toDateSelector") && (configuration.parameters()._isRoundtrip)) {
       let toDateElement = await inputTag.element(browserPage, monitoring);
@@ -102,15 +93,12 @@ async function setAdults(browserPage, page, configuration, monitoring){
   let inputTags = page.tagsList().filter(tag => (tag.action() == enums.tagTypeEnums.get("dropdown").value) && (tag.objectName() == "adults"));
   for (var inputTag of inputTags){
     let adultElement = await inputTag.element(browserPage, monitoring);
-    console.log("in set adults");
     await browserPage.evaluate((element, value) => {
       function selectAdults(element, value) {
         for (i = 0; i < element.options.length; i++) {
           if (parseInt(element.options[i].text) == value)
           {
-            console.log(element.options[i].text, value);
             element.options[i].selected = true;
-            console.log(element);
             return;
           }
         }

@@ -14,7 +14,7 @@ ListingPage.prototype._setInput = async function(browserPage, page, configuratio
 };
 ListingPage.prototype._getInfo = async function(browserPage, page, configuration, response, monitoring, logger){
   console.log("in listing page");
-  await browserPage.waitFor(20000);
+  await browserPage.waitFor(10000);
   let _parentTags = page.tagsList().filter(tag => (tag.parent() == null && tag.action() == enums.tagTypeEnums.get("select").value && tag.isRoot()));
   await selectionInfo(browserPage, page, configuration, response, monitoring, logger, _parentTags);
   logger.Info = "GetInfo completed on listing page.";
@@ -67,11 +67,15 @@ async function selectionInfo(browserPage, page, configuration, response, monitor
       }
       console.log("check tag flush flight details ", _tag.name());
       if (_tag.raise() && _tag.raise() == "flush.flightdetails"){
-        console.log("flushing flight details")
+        console.log("flushing flight details");
         responseHelper.flushFlightDetails(response);
       }
       if (_tag.raise() && _tag.raise() == "flush.flightdetailsInbound"){
         responseHelper.flushFlightDetailsInbound(response);
+      }
+      if (_tag.raise() && _tag.raise() == "flush"){
+        console.log("flush all details");
+        responseHelper.flush(response, configuration.parameters().isRoundtrip());
       }
     }
   }
@@ -92,6 +96,7 @@ async function selectionInfo(browserPage, page, configuration, response, monitor
  * @return None.
  */
 async function handleSelect(browserPage, parentElement, tag, page, configuration, response, monitoring, logger){
+  console.log("selecting tag ", tag.name());
   if ([enums.tagTypeEnums.get("select").value].includes(tag.action())){
     if (tag.raise() && tag.raise() == "screenshot"){
       await browserPage.waitFor(2500);
@@ -219,7 +224,6 @@ async function handleClick(browserPage, parentElement, searchInPage, tag, page, 
  */
 async function handleExtract(browserPage, parentElement, tag, page, configuration, response, monitoring, logger){
   if (tag.action() == enums.tagTypeEnums.get("extractor").value){
-    console.log("extracting data of tag ", tag.name());
     await extractData(browserPage, parentElement, tag, response, configuration, monitoring, logger);
     if (tag.linked())
     {
@@ -243,9 +247,7 @@ async function handleExtract(browserPage, parentElement, tag, page, configuratio
  * @return None.
  */
 async function extractData(browserPage, parentElement, tag, response, configuration, monitoring, logger){
-  console.log("in extractdata");
   let value = await tag.value(browserPage, monitoring, parentElement);
-  console.log("extracted value ", value);
   responseHelper.mapValueToData(tag.objectName(), value, cacheUrl, configuration.parameters().isRoundtrip(), configuration.isCombined(), tag.expression());
 }
 

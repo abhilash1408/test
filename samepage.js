@@ -114,15 +114,10 @@ async function crawl(browser, page, configuration, response, specManager, monito
     return;
   }
   logger.Info = "Creating pages list object.";
-  console.log("creating pages");
   let pages = specManager.pages();
-  console.log("created pages");
-  console.log("creating nav_man");
   const navigationManager = NavigationManager.create(pages, configuration, response, monitoring, logger);
-  console.log("created nav_man");
   try{
     logger.Info = "Calling NavigationManager crawl method.";
-    console.log("nav man.crawl()")
     await navigationManager.crawl(browser, page).then(async () => {
       logger.Info = "Crawl completed.";
       response.setCrawlEndTime = dateFormat(new Date(), "UTC:mm/dd/yyyy hh:MM:ss TT");

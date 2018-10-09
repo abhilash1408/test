@@ -73,8 +73,6 @@ function traverseAndGetCalendarControl(configDateValue) {
         var fromCalendarHtmlControls = document.querySelector("div[class*='ui-datepicker-inline']");
         ///When the calendar is opened, it shows two months, viz. the current and the next.
         ///So using the given date, we need to traverse to the correct month and then choose the date given.
-        console.log("calendar div")
-        console.log(fromCalendarHtmlControls);
 
         //Get the current month
         var currentTableMonthDataControls = fromCalendarHtmlControls.getElementsByTagName('table')[0];
@@ -84,12 +82,12 @@ function traverseAndGetCalendarControl(configDateValue) {
         var currentMonthLongNameIndex = monthsLongNameArray.indexOf(currentMonth.trim().toLowerCase());
         var currentMonthShortNameIndex = monthsShortNameArray.indexOf(currentMonth.substring(0, 3).toLowerCase());
         //Get the year
-        var prevPageControl = cc.querySelector('a[class*="datepicker-prev"]');
+        var prevPageControl = cc.querySelector('a[class*="ui-datepicker-prev"]');
 
         //Get the next month
         //var nextMonthTableDataControls = fromCalendarHtmlControls.getElementsByTagName('table')[1];
         var lookupMonthDataControl = null;
-        var nextPageControl = cc.querySelector('a[class*="datepicker-next"]');
+        var nextPageControl = cc.querySelector('a[class*="ui-datepicker-next"]');
         if (currentMonthLongNameIndex > givenMonthLongNameIndex || currentMonthShortNameIndex > givenMontShorthNameIndex) {
             //debug
             //console.log("need to go back in the calendar");

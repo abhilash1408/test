@@ -59,7 +59,8 @@ var tagTypeEnums = new Enum({
 
 var expressionTypeEnums = new Enum({
   "regex": 1,
-  "split": 2
+  "split": 2,
+  "replace": 3
 });
 
 var logLevelEnums = new Enum({
